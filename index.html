@@ -146,13 +146,27 @@
             padding: 3rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            content-visibility: auto;
+            contain-intrinsic-size: 800px 880px;
         }
 
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .project-card {
+            contain: layout paint;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
 
         @media (max-width: 768px) {
@@ -283,12 +297,11 @@
         </div>
     </section>
 
-    <script>
+    <script defer>
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
 
-        // Check for saved theme preference or default to system preference
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const savedTheme = localStorage.getItem('theme');
         const currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
@@ -313,7 +326,6 @@
             updateTheme(newTheme);
         });
 
-        // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
             if (!localStorage.getItem('theme')) {
                 updateTheme(e.matches ? 'dark' : 'light');
